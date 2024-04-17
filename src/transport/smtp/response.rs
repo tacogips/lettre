@@ -353,11 +353,33 @@ mod test {
             }
         );
 
-        let wrong_code = "2506-me\r\n250-8BITMIME\r\n250-SIZE 42\r\n250 AUTH PLAIN CRAM-MD5\r\n";
-        assert!(wrong_code.parse::<Response>().is_err());
+        let invalid_code = "2506-me\r\n250-8BITMIME\r\n250-SIZE 42\r\n250 AUTH PLAIN CRAM-MD5\r\n";
+        assert!(invalid_code.parse::<Response>().is_err());
 
-        let wrong_end = "250-me\r\n250-8BITMIME\r\n250-SIZE 42\r\n250-AUTH PLAIN CRAM-MD5\r\n";
-        assert!(wrong_end.parse::<Response>().is_err());
+        let multilne_without_the_last_line =
+            "250-me\r\n250-8BITMIME\r\n250-SIZE 42\r\n250-AUTH PLAIN CRAM-MD5\r\n";
+        assert!(multilne_without_the_last_line.parse::<Response>().is_err());
+        //Please refer to section 4.2.1 "Reply Code Severities and Theory" of  RFC 5321 for the spec on multiline response.
+        let multiline_with_the_last_line =
+            "250-me\r\n250-8BITMIME\r\n250-SIZE 42\r\n250-AUTH PLAIN CRAM-MD5\r\n250 DSN\r\n";
+
+        assert_eq!(
+            multiline_with_the_last_line.parse::<Response>().unwrap(),
+            Response {
+                code: Code {
+                    severity: Severity::PositiveCompletion,
+                    category: Category::MailSystem,
+                    detail: Detail::Zero,
+                },
+                message: vec![
+                    "me".to_owned(),
+                    "8BITMIME".to_owned(),
+                    "SIZE 42".to_owned(),
+                    "AUTH PLAIN CRAM-MD5".to_owned(),
+                    "DSN".to_owned(),
+                ],
+            }
+        );
     }
 
     #[test]
