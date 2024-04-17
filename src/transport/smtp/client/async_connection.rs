@@ -129,8 +129,11 @@ impl AsyncSmtpConnection {
             panic: false,
             server_info: ServerInfo::default(),
         };
-        // TODO log
+
         let _response = conn.read_response().await?;
+
+        #[cfg(feature = "tracing")]
+        tracing::debug!("response of the connection {}", _response);
 
         conn.ehlo(hello_name).await?;
 
@@ -216,7 +219,7 @@ impl AsyncSmtpConnection {
             try_smtp!(self.command(Starttls).await, self);
             self.stream.get_mut().upgrade_tls(tls_parameters).await?;
             #[cfg(feature = "tracing")]
-            tracing::debug!("connection encrypted");
+            tracing::debug!("connection encrypted in async. starting ehlo");
             // Send EHLO again
             try_smtp!(self.ehlo(hello_name).await, self);
             Ok(())
