@@ -246,6 +246,9 @@ fn parse_detail(i: &str) -> IResult<&str, Detail> {
 }
 
 pub(crate) fn parse_response(i: &str) -> IResult<&str, Response> {
+    #[cfg(feature = "tracing")]
+    tracing::debug!("parsing response {:?} ", i);
+
     let (i, lines) = many0(tuple((
         parse_code,
         preceded(tag("-"), take_until("\r\n")),

@@ -194,6 +194,10 @@ impl AsyncSmtpConnection {
     /// Send EHLO and update server info
     async fn ehlo(&mut self, hello_name: &ClientId) -> Result<(), Error> {
         let ehlo_response = try_smtp!(self.command(Ehlo::new(hello_name.clone())).await, self);
+
+        #[cfg(feature = "tracing")]
+        tracing::debug!("ehlo response is {:?} ", ehlo_response);
+
         self.server_info = try_smtp!(ServerInfo::from_response(&ehlo_response), self);
         Ok(())
     }

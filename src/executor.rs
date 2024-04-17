@@ -147,6 +147,9 @@ impl Executor for Tokio1Executor {
         )
         .await?;
 
+        #[cfg(feature = "tracing")]
+        tracing::debug!("connecting with tls {:?} in async connection", tls);
+
         #[cfg(any(feature = "tokio1-native-tls", feature = "tokio1-rustls-tls"))]
         match tls {
             Tls::Opportunistic(ref tls_parameters) => {
