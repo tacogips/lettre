@@ -187,10 +187,10 @@ impl AsyncSmtpConnection {
             try_smtp!(self.ehlo(hello_name).await, self);
             Ok(())
         } else {
-            Err(error::client(
+            Err(error::client(format!(
                 "STARTTLS is not supported on this server :{}",
-                hello_name,
-            ))
+                hello_name
+            )))
         }
     }
 
