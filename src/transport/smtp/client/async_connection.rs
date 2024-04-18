@@ -108,7 +108,7 @@ impl AsyncSmtpConnection {
 
         // Print server information
         #[cfg(feature = "tracing")]
-        tracing::debug!("server {}", conn.server_info);
+        tracing::debug!("server info of {} is {}", hello_name, conn.server_info);
         Ok(conn)
     }
 
