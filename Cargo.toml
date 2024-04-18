@@ -105,10 +105,11 @@ name = "transport_smtp"
 default = [
   "smtp-transport",
   "pool",
-  "native-tls",
   "hostname",
   "builder",
   "tracing",
+  "tokio1",
+  "tokio1-rustls-tls",
 ]
 builder = ["httpdate", "mime", "fastrand", "quoted_printable", "email-encoding"]
 mime03 = ["mime"]
