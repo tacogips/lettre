@@ -14,7 +14,7 @@ authors = [
 categories = ["email", "network-programming"]
 keywords = ["email", "smtp", "mailer", "message", "sendmail"]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.71"
 
 [badges]
 is-it-maintained-issue-resolution = { repository = "lettre/lettre" }
@@ -50,7 +50,7 @@ percent-encoding = { version = "2.3", optional = true }
 
 ## tls
 native-tls = { version = "0.2.5", optional = true } # feature
-rustls = { version = "0.23.3", default-features = false, features = [
+rustls = { version = "0.23.46", default-features = false, features = [
   "ring",
   "logging",
   "std",
@@ -58,7 +58,7 @@ rustls = { version = "0.23.3", default-features = false, features = [
 ], optional = true }
 rustls-pemfile = { version = "2", optional = true }
 rustls-native-certs = { version = "0.7", optional = true }
-webpki-roots = { version = "0.26", optional = true }
+webpki-roots = { version = "1.0.11", optional = true }
 boring = { version = "4", optional = true }
 
 # async
